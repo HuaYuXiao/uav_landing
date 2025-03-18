@@ -2,7 +2,7 @@ import rospy
 import math
 import numpy as np
 
-from mavros_msgs.msg import State
+from mavros_msgs.msg import State, PositionTarget
 from mavros_msgs.srv import CommandBool, CommandLong, SetMode
 from geometry_msgs.msg import Point, PoseStamped, TwistStamped, Quaternion
 from geographic_msgs.msg import GeoPoseStamped
@@ -55,9 +55,8 @@ class OffboardController():
         self.traj_sub = rospy.Subscriber('/landing/setpoint_vel', TwistStamped, self._trajectory_callback)
 
     def _setup_publishers(self):
-        self.pos_setpoint_local_pub = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped)
+        self.setpoint_raw_local_pub = rospy.Publisher('/mavros/setpoint_raw/local', PositionTarget)
         self.pos_setpoint_global_pub = rospy.Publisher('/mavros/setpoint_position/global', GeoPoseStamped)
-        self.pos_setpoint_vel_pub = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel', TwistStamped)
 
     def _state_callback(self, msg):
         self.state = msg
@@ -100,7 +99,7 @@ class OffboardController():
                     result = self.set_arming_srv(arm)
 
                     if result.success:
-                        rospy.loginfo("Setting FCU arm: {}".format(arm))
+                        rospy.loginfo('Setting FCU arm: {}'.format(arm))
                     else:
                         rospy.logerr('Failed to set arm')
                     
@@ -117,7 +116,7 @@ class OffboardController():
                     result = self.set_mode_srv(0, mode)
 
                     if result.mode_sent:
-                        rospy.loginfo("Set FCU mode: {0}".format(mode))
+                        rospy.loginfo('Set FCU mode: {0}'.format(mode))
                     else:
                         rospy.logerr('Failed to send mode command')
 
@@ -129,13 +128,22 @@ class OffboardController():
         return self.state.mode == self.state.MODE_PX4_OFFBOARD and self.state.armed
     
     def _set_local_goal(self, xyz, yaw = np.pi / 2):
-        msg = PoseStamped()
-        msg.header.stamp = rospy.Time.now()
-        msg.pose.position = Point(xyz[0], xyz[1], xyz[2])
-        quaternion = quaternion_from_euler(0, 0, yaw)
-        msg.pose.orientation = Quaternion(*quaternion)
+        msg = PositionTarget()
 
-        self.pos_setpoint_local_pub.publish(msg)
+        msg.header.stamp = rospy.Time.now()
+        msg.coordinate_frame = PositionTarget.FRAME_LOCAL_NED
+
+        # Set the type_mask so that only position and yaw are used.
+        # This mask ignores velocity, acceleration/force, and yaw_rate:
+        msg.type_mask = (PositionTarget.IGNORE_VX | PositionTarget.IGNORE_VY | PositionTarget.IGNORE_VZ |
+                         PositionTarget.IGNORE_AFX | PositionTarget.IGNORE_AFY | PositionTarget.IGNORE_AFZ |
+                         PositionTarget.IGNORE_YAW_RATE)
+        msg.position.x = xyz[0]
+        msg.position.y = xyz[1]
+        msg.position.z = xyz[2]
+        msg.yaw = yaw
+
+        self.setpoint_raw_local_pub.publish(msg)
 
     def _set_gps_goal(self, latlon, yaw = np.pi / 2):
         msg = GeoPoseStamped()
@@ -149,7 +157,20 @@ class OffboardController():
 
         self.pos_setpoint_global_pub.publish(msg)
 
+    def _set_velocity_goal(self, vxvyvz):
+        msg = PositionTarget()
 
+        msg.header.stamp = rospy.Time.now()
+        msg.coordinate_frame = PositionTarget.FRAME_LOCAL_NED
+        # 忽略位置、加速度和yaw控制，仅控制速度
+        msg.type_mask = (PositionTarget.IGNORE_PX | PositionTarget.IGNORE_PY | PositionTarget.IGNORE_PZ |
+                         PositionTarget.IGNORE_AFX | PositionTarget.IGNORE_AFY | PositionTarget.IGNORE_AFZ |
+                         PositionTarget.IGNORE_YAW)
+        msg.velocity.x = vxvyvz[0]
+        msg.velocity.y = vxvyvz[1]
+        msg.velocity.z = vxvyvz[2]
+        self.setpoint_raw_local_pub.publish(msg)
+        
     def arm(self, timeout = 30.0):
         t = rospy.Time.now()
 
@@ -246,21 +267,15 @@ class OffboardController():
         self._set_local_goal(xyz, n_yaw)
         self.rate.sleep()
 
+    def set_velocity_goal(self, vxvyvz):
+        if not self._is_started():
+            raise Exception('Not armed')
+        self._set_velocity_goal(vxvyvz)
+        self.rate.sleep()
+
     def get_local_position(self):
         return self.local_position
 
     def get_next_vel_setpoint(self):
         return self.next_vel_waypoint
     
-    def set_velocity_goal(self, vxvyvz):
-        if not self._is_started:
-            raise Exception('Not armed')
-        
-        msg = TwistStamped()
-        msg.twist.linear.x = vxvyvz[0]
-        msg.twist.linear.y = vxvyvz[1]
-        msg.twist.linear.z = vxvyvz[2]
-
-        self.pos_setpoint_vel_pub.publish(msg)
-        self.rate.sleep()
-
