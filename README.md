@@ -3,7 +3,7 @@
 ![Example Landing](landing.gif)
 
 ## Project Overview
-This project involves the development of a simulation model for the autonomous landing of a multirotor unmanned aerial vehicle (UAV) on a moving landing platform. The simulation utilizes Aruco fractal marker pose estimation and ultra-wideband technology, and infrared optical beacons for precise landing. 
+This project involves the development of a simulation model for the autonomous landing of a multirotor unmanned aerial vehicle (UAV) on a moving landing platform. The simulation utilizes Aruco fractal marker pose estimation for precise landing. 
 
 ## Dependencies
 
@@ -21,8 +21,6 @@ This project involves the development of a simulation model for the autonomous l
 - `drone_fsm.yaml` - Configuration for the drone finite state machine.
 - `landing_controller.yaml` - Configuration for the landing controller.
 - `aruco_estimator.yaml` - Configuration for Aruco marker estimation.
-- `infra_optical_estimator.yaml` - Configuration for infrared optical estimation.
-- `infra_optical_simulator.yaml` - Configuration for the infrared optical simulator.
 - `ugv_control.yaml` - Configuration for the unmanned ground vehicle.
 
 ### Launch
@@ -30,16 +28,10 @@ This project involves the development of a simulation model for the autonomous l
 - `drone_fsm.launch` - Launch file for the drone finite state machine.
 - `landing_controller.launch` - Launch file for the landing controller.
 - `aruco_estimator.launch` - Launch file for the Aruco marker estimator.
-- `infra_optical_estimator.launch` - Launch file for the infrared optical estimator.
-- `infra_optical_simulator.launch` - Launch file for the infrared optical simulator.
 - `spawn_husky.launch` - Launch file for spawning the Husky model.
 - `spawn_iris.launch` - Launch file for spawning the Iris model.
 - `ugv_control.launch` - Launch file for UGV control.
 - `uav_landing.launch` - Main launch file for the UAV landing simulation.
-
-### Messages
-
-- `Intensity.msg` - Message definition for infrared beacon light intensity.
 
 ### Scripts
 
@@ -51,11 +43,6 @@ This project involves the development of a simulation model for the autonomous l
 #### Positioning
 
 - `aruco_estimator.py` - Script for Aruco marker estimation.
-- `infra_optical_estimator.py` - Script for infrared optical estimation.
-
-#### Sensor Simulation
-
-- `infra_optical_simulator.py` - Script for the infrared optical simulator.
 
 #### UGV
 
@@ -71,7 +58,6 @@ This project involves the development of a simulation model for the autonomous l
 The simulation employs the following technologies for accurate landing:
 
 - **Aruco Fractal Marker Pose Estimation:** Utilizes Aruco fractal markers to determine the precise position and orientation of the landing platform.
-- **Infrared Optical Beacons:** Uses and simulates infrared optical beacons to aid in precise positioning and landing of the UAV.
 
 # References
 - [Bachelor thesis](https://elib.spbstu.ru/dl/3/2023/vr/vr23-3642.pdf/en/info)

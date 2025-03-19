@@ -6,7 +6,6 @@ find_package(catkin REQUIRED COMPONENTS
     roscpp
     gazebo_ros
     gazebo_msgs
-    message_generation
     image_transport
     cv_bridge
     sensor_msgs
@@ -37,27 +36,12 @@ include_directories(
 
 catkin_python_setup()
 
-add_message_files(
-    FILES
-        UWBRange.msg
-        Intensity.msg
-)
-
-generate_messages(
-    DEPENDENCIES
-    std_msgs
-    sensor_msgs
-    geometry_msgs
-    mavros_msgs
-)
-
 catkin_package(
     DEPENDS
         rospy
         roscpp
         gazebo_ros
         gazebo_msgs
-        message_generation
         image_transport
         cv_bridge
         mavros_msgs

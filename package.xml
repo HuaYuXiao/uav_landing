@@ -1,18 +1,24 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>uav_landing_sim</name>
+  <name>uav_landing</name>
   <version>0.0.0</version>
-  <description>The mp_uav_landing_sim package</description>
+  <description>The uav_landing package</description>
   <maintainer email="dmitry.anikin@proton.me">Dmitry Anikin</maintainer>
   
   <license>GPL-3.0</license>
 
   <buildtool_depend>catkin</buildtool_depend>
   
+  <depend>roscpp</depend>
+  <depend>image_transport</depend>
+  <depend>cv_bridge</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>mavros_msgs</depend>
+  <depend>tf2</depend>
   <build_depend>rospy</build_depend>
   <build_depend>gazebo_ros</build_depend>
   <build_depend>gazebo_msgs</build_depend>
-  <build_depend>message_generation</build_depend>
 
   <build_export_depend>rospy</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
@@ -20,8 +26,6 @@
   <exec_depend>rospy</exec_depend>
   <exec_depend>gazebo_ros</exec_depend>
   <exec_depend>gazebo_msgs</exec_depend>
-  <exec_depend>message_runtime</exec_depend>
-  <exec_depend>message_generation</exec_depend>
 
   <export>
     <gazebo_ros gazebo_model_path="${prefix}/models"/>
