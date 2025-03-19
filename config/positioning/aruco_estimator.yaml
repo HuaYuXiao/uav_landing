@@ -1,4 +1,4 @@
-camera_topic_prefix: '/iris_bottom_fpv/usb_cam/'
+camera_topic_prefix: '/monocular/'
 camera_parameters_file: 'calib.yaml'
 marker_size: 1 
 
