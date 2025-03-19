@@ -66,8 +66,8 @@ class Mission(State):
         try:
             rospy.loginfo('Executing state MISSION')
 
-            target_waypoint = rospy.get_param('~target_waypoint')
-            self.drc.reach_gps_goal(target_waypoint, yaw = np.pi / 2, offset = 1e-6)
+            # target_waypoint = rospy.get_param('~target_waypoint')
+            # self.drc.reach_gps_goal(target_waypoint, yaw = np.pi / 2, offset = 1e-6)
                         
             msg_ena = Bool()
             msg_ena.data = True
@@ -122,7 +122,7 @@ class Landing(State):
                 rospy.logerr('[FSM] Failed to connect to ModelState service')
 
             model_state = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
-            error_resp = model_state('iris_bottom_fpv', 'husky')
+            error_resp = model_state('iris', 'husky')
             error_pos = np.array([error_resp.pose.position.x, error_resp.pose.position.y])
 
             error = np.linalg.norm(error_pos)

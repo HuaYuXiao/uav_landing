@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<launch>
+  <include file="$(find uav_landing)/launch/spawners/spawn_iris.launch">
+
+  <include file="$(find uav_landing)/launch/spawners/spawn_husky.launch" />
+
+ <include file="$(find uav_landing)/launch/drone/drone_fsm.launch">
+    <arg name="attempts_count" value="1"/>
+    <arg name="output" value="results.csv"/>
+  </include>
+
+    <include file="$(find uav_landing)/launch/positioning/aruco_estimator.launch"/> 
+
+    <node pkg="rqt_image_view" type="rqt_image_view" name="rqt_image_view" args="/monocular/image_info" output="screen"/>
+
+  <include file="$(find uav_landing)/launch/drone/landing_controller.launch" />
+</launch>
