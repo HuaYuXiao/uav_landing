@@ -3,11 +3,11 @@
 ![Example Landing](landing.gif)
 
 ## Project Overview
-This project involves the development of a simulation model for the autonomous landing of a multirotor unmanned aerial vehicle (UAV) on a moving landing platform. The simulation utilizes Aruco fractal marker pose estimation and ultra-wideband technology, and infrared optical beacons for precise landing. This work is part of my bachelor thesis.
+This project involves the development of a simulation model for the autonomous landing of a multirotor unmanned aerial vehicle (UAV) on a moving landing platform. The simulation utilizes Aruco fractal marker pose estimation and ultra-wideband technology, and infrared optical beacons for precise landing. 
 
 ## Dependencies
 
-1. PX4 Autopilot (v1.13.1)
+1. PX4 Autopilot (v1.13.3)
 2. Gazebo
 3. ROS1
 4. OpenCV
@@ -22,9 +22,7 @@ This project involves the development of a simulation model for the autonomous l
 - `landing_controller.yaml` - Configuration for the landing controller.
 - `aruco_estimator.yaml` - Configuration for Aruco marker estimation.
 - `infra_optical_estimator.yaml` - Configuration for infrared optical estimation.
-- `uwb_lqr_vanc_estimator.yaml` - Configuration for UWB estimation.
 - `infra_optical_simulator.yaml` - Configuration for the infrared optical simulator.
-- `uwb_simulator.yaml` - Configuration for the UWB simulator.
 - `ugv_control.yaml` - Configuration for the unmanned ground vehicle.
 
 ### Launch
@@ -33,18 +31,15 @@ This project involves the development of a simulation model for the autonomous l
 - `landing_controller.launch` - Launch file for the landing controller.
 - `aruco_estimator.launch` - Launch file for the Aruco marker estimator.
 - `infra_optical_estimator.launch` - Launch file for the infrared optical estimator.
-- `uwb_lqr_vanc_estimator.launch` - Launch file for the UWB estimator.
 - `infra_optical_simulator.launch` - Launch file for the infrared optical simulator.
-- `uwb_simulator.launch` - Launch file for the UWB simulator.
 - `spawn_husky.launch` - Launch file for spawning the Husky model.
 - `spawn_iris.launch` - Launch file for spawning the Iris model.
 - `ugv_control.launch` - Launch file for UGV control.
-- `mp_uav_landing_sim.launch` - Main launch file for the UAV landing simulation.
+- `uav_landing.launch` - Main launch file for the UAV landing simulation.
 
 ### Messages
 
 - `Intensity.msg` - Message definition for infrared beacon light intensity.
-- `UWBRange.msg` - Message definition for UWB range.
 
 ### Scripts
 
@@ -57,12 +52,10 @@ This project involves the development of a simulation model for the autonomous l
 
 - `aruco_estimator.py` - Script for Aruco marker estimation.
 - `infra_optical_estimator.py` - Script for infrared optical estimation.
-- `uwb_lqr_vanc_estimator.py` - Script for UWB estimation.
 
 #### Sensor Simulation
 
 - `infra_optical_simulator.py` - Script for the infrared optical simulator.
-- `uwb_simulator.py` - Script for the UWB simulator.
 
 #### UGV
 
@@ -78,7 +71,6 @@ This project involves the development of a simulation model for the autonomous l
 The simulation employs the following technologies for accurate landing:
 
 - **Aruco Fractal Marker Pose Estimation:** Utilizes Aruco fractal markers to determine the precise position and orientation of the landing platform.
-- **Ultra-Wideband Technology:** Uses and simulates UWB signals for accurate distance measurement and positioning.
 - **Infrared Optical Beacons:** Uses and simulates infrared optical beacons to aid in precise positioning and landing of the UAV.
 
 # References

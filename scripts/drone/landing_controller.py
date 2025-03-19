@@ -34,7 +34,7 @@ class LandingController():
         self._setup_publishers()
 
     def _read_config(self):
-        self.pos_topic = rospy.get_param('~pose_topic', 'uwb_lqr_vanc')
+        self.pos_topic = rospy.get_param('~pose_topic', '/positioning/aruco')
         self.a = rospy.get_param('~a', 20)
         self.b = rospy.get_param('~b', -17)
         self.Vz0 = rospy.get_param('~Vz0', 1.5)
@@ -117,16 +117,16 @@ class LandingController():
                     x = max(1, abs(error[2] / rospy.get_param('/drone_fsm/takeoff_altitude')))
                     command[2] = -self.Vz0 * log10(1 + self.a * x + self.b * x ** 2)
 
-            if self.target_lost:
-                if self.time >= 3:
-                    command[2] = np.inf
-                    self.time = 0
-                    self.relative_pos = [0, 0, 0]
-                    self.error = self.relative_pos
-                elif abs(error[2]) < 7:
-                    command[2] = 5
-                    command[0] = 0
-                    command[1] = 0
+            # if self.target_lost:
+            #     if self.time >= 3:
+            #         command[2] = np.inf
+            #         self.time = 0
+            #         self.relative_pos = [0, 0, 0]
+            #         self.error = self.relative_pos
+            #     elif abs(error[2]) < 7:
+            #         command[2] = 5
+            #         command[0] = 0
+            #         command[1] = 0
 
             self.prev_timestamp = stamp
             self._send_vel(command)
