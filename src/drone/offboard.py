@@ -55,8 +55,8 @@ class OffboardController():
         self.traj_sub = rospy.Subscriber('/landing/setpoint_vel', TwistStamped, self._trajectory_callback)
 
     def _setup_publishers(self):
-        self.setpoint_raw_local_pub = rospy.Publisher('/mavros/setpoint_raw/local', PositionTarget)
-        self.pos_setpoint_global_pub = rospy.Publisher('/mavros/setpoint_position/global', GeoPoseStamped)
+        self.setpoint_raw_local_pub = rospy.Publisher('/mavros/setpoint_raw/local', PositionTarget, queue_size=10)
+        self.pos_setpoint_global_pub = rospy.Publisher('/mavros/setpoint_position/global', GeoPoseStamped, queue_size=10)
 
     def _state_callback(self, msg):
         self.state = msg
