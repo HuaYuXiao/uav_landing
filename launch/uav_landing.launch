@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <launch>
-  <include file="$(find uav_landing)/launch/spawners/spawn_iris.launch">
+  <include file="$(find uav_landing)/launch/spawners/spawn_iris.launch" />
 
   <include file="$(find uav_landing)/launch/spawners/spawn_husky.launch" />
 

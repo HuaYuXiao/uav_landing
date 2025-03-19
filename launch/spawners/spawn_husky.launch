@@ -2,13 +2,13 @@
 
 <launch>
 
-  <arg name="robot_namespace" default="/"/>
+  <arg name="robot_namespace" default="/husky"/>
   <arg name="top_plate_enable" default="false"/>
 
   <arg name="x" default="0.0"/>
   <arg name="y" default="0.0"/>
-  <arg name="z" default="0.0"/>
-  <arg name="yaw" default="0.0"/>
+  <arg name="z" default="0.1"/>
+  <arg name="yaw" default="3.14"/>
 
   <group ns="$(arg robot_namespace)">
       <include file="$(find husky_control)/launch/control.launch">
@@ -18,7 +18,7 @@
       </include>
       
       <param name="robot_description" 
-        command="$(find xacro)/xacro $(find mp_uav_landing_sim)/models/husky/urdf/ugv.urdf.xacro 
+        command="$(find xacro)/xacro $(find uav_landing)/models/husky/urdf/ugv.urdf.xacro 
         robot_namespace:=$(arg robot_namespace)" />
       <node name="spawn_husky_model" pkg="gazebo_ros" type="spawn_model"
         args="-x $(arg x)
@@ -30,6 +30,7 @@
               -param robot_description
               -model husky
               -robot_namespace $(arg robot_namespace)" />
-
+  
+    <include file="$(find uav_landing)/launch/ugv/ugv_control.launch" />
   </group>
 </launch>
