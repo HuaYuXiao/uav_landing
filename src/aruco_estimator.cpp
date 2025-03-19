@@ -23,7 +23,7 @@ private:
     aruco::FractalDetector fractal_detector_;
     aruco::CameraParameters cam_params_;
     std::string camera_topic_prefix, camera_parameters_file;
-    double marker_size_;
+    float marker_size_;
     bool ena_disturbances_;
     double brightness_;
     double haze_coeff_;
@@ -41,7 +41,7 @@ ArucoEstimator::ArucoEstimator() : it_(nh_) {
     // Load parameters
     nh_.param<std::string>("camera_topic_prefix", camera_topic_prefix, "/monocular/");
     nh_.param<std::string>("camera_parameters_file", camera_parameters_file, "calib.yaml");
-    nh_.param<double>("marker_size", marker_size_, 1);
+    nh_.param<float>("marker_size", marker_size_, 1);
     nh_.param<bool>("ena_disturbances", ena_disturbances_, true);
     nh_.param<double>("brightness", brightness_, 1);
     nh_.param<double>("haze_coeff", haze_coeff_, 0);

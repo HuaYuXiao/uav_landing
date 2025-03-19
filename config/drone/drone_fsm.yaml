@@ -2,4 +2,4 @@ target_waypoint:
   - 47.3975935
   - 8.545535
 
-takeoff_altitude: 10
+takeoff_altitude: 5
